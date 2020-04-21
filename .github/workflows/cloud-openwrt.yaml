@@ -62,10 +62,9 @@ jobs:
 
     - name: Download package
       run: |
-        cd openwrt
-        mkdir package/udp2raw package/udpspeeder
-        cd package/udp2raw && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udp2raw/Makefile
-        cd package/udpspeeder && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udpspeeder/Makefile
+        cd openwrt && mkdir package/udp2raw package/udpspeeder
+        cd openwrt/package/udp2raw && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udp2raw/Makefile
+        cd openwrt/package/udpspeeder && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udpspeeder/Makefile
         
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
