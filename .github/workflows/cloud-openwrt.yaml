@@ -47,9 +47,9 @@ jobs:
       run: |
         wget -c https://openwrt.proxy.ustclug.org/snapshots/targets/armvirt/64/openwrt-sdk-armvirt-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz -O openwrt.tar.xz
         tar xvJf openwrt.tar.xz
-        cd openwrt && mkdir package/udp2raw package/udpspeeder
-        cd openwrt/package/udp2raw && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udp2raw/Makefile
-        cd openwrt/package/udpspeeder && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udpspeeder/Makefile
+#        cd openwrt && mkdir package/udp2raw package/udpspeeder
+#        cd openwrt/package/udp2raw && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udp2raw/Makefile
+#        cd openwrt/package/udpspeeder && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udpspeeder/Makefile
 
 #     - name: Update feeds
 #       run: cd openwrt && ./scripts/feeds update -a
