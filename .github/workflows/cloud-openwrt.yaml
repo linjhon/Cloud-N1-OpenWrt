@@ -89,21 +89,23 @@ jobs:
 #         name: OpenWrt_firmware
 #         path: ${{ env.FIRMWARE }}
 
-#     - name: Create release
-#       uses: ncipollo/release-action@v1
-#       with:
-#         name: ${{ env.DATE }} ❤️ | N1-OpenWrt 自动编译
-#         allowUpdates: true
-#         tag: ${{ env.tag_name }}
-#         commit: master
-#         token: ${{ secrets.RELEASES_TOKEN }}
-#         body: |
-#           编译使用版本:
-#           ${{ env.useVersionInfo }}
-#         artifacts: "${{ env.FIRMWARE }}/*"
+
     - name: Upload artifact
       uses: actions/upload-artifact@master
       with:
         name: OpenWrt firmware
-        path: ./bin/
+        path: ./openwrt/bin/packages
+
+    - name: Create release
+      uses: ncipollo/release-action@v1
+      with:
+        name: ${{ env.DATE }} ❤️ | N1-OpenWrt 自动编译
+        allowUpdates: true
+        tag: ${{ env.tag_name }}
+        commit: master
+        token: ${{ secrets.RELEASES_TOKEN }}
+        body: |
+          编译使用版本:
+          ${{ env.useVersionInfo }}
+        artifacts: "${{ env.FIRMWARE }}/*"
   
