@@ -49,7 +49,10 @@ jobs:
         cd openwrt && mkdir package/udp2raw package/udpspeeder package/
         cd package/udp2raw && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udp2raw/Makefile && cd ../../
         cd package/udpspeeder && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udpspeeder/Makefile && cd ../../
-        cd package && git clone https://github.com/atrandys/luci-udptools.git
+        
+    - name: download luci-udptool
+      run: |
+        cd openwrt/package && git clone https://github.com/atrandys/luci-udptools.git
 
 #     - name: Update feeds
 #       run: cd openwrt && ./scripts/feeds update -a
