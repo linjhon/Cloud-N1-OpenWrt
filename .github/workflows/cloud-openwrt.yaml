@@ -46,9 +46,10 @@ jobs:
     - name: download n1 sdk
       run: |
         wget -c https://openwrt.proxy.ustclug.org/snapshots/targets/armvirt/64/openwrt-sdk-armvirt-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz -O openwrt.tar.xz && tar xvJf openwrt.tar.xz && mv openwrt-sdk-armvirt-64_gcc-8.4.0_musl.Linux-x86_64 openwrt
-        cd openwrt && mkdir package/udp2raw package/udpspeeder
+        cd openwrt && mkdir package/udp2raw package/udpspeeder package/
         cd package/udp2raw && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udp2raw/Makefile && cd ../../
         cd package/udpspeeder && wget https://raw.githubusercontent.com/atrandys/openwrt-udp2raw-speeder/master/udpspeeder/Makefile && cd ../../
+        cd package && git clone https://github.com/atrandys/luci-udptools.git
 
 #     - name: Update feeds
 #       run: cd openwrt && ./scripts/feeds update -a
@@ -79,6 +80,13 @@ jobs:
         cd openwrt
         make package/udpspeeder/compile V=99
         echo "::set-output name=status::success"
+        
+    - name: Make the udpspeeder ipk
+      id: luci-udptools
+      run: |
+        cd openwrt
+        make package/luci-udptools/compile V=99
+        echo "::set-output name=status::success"
 
 #     - name: Organize files
 #       id: organize
@@ -104,16 +112,16 @@ jobs:
         name: OpenWrt firmware
         path: ./openwrt/bin/packages
 
-    - name: Create release
-      uses: ncipollo/release-action@v1
-      with:
-        name: ${{ env.DATE }} ❤️ | N1-OpenWrt 自动编译
-        allowUpdates: true
-        tag: ${{ env.tag_name }}
-        commit: master
-        token: ${{ secrets.RELEASES_TOKEN }}
-        body: |
-          编译使用版本:
-          ${{ env.useVersionInfo }}
-        artifacts: openwrt/bin/packages/*
+#     - name: Create release
+#       uses: ncipollo/release-action@v1
+#       with:
+#         name: ${{ env.DATE }} ❤️ | N1-OpenWrt 自动编译
+#         allowUpdates: true
+#         tag: ${{ env.tag_name }}
+#         commit: master
+#         token: ${{ secrets.RELEASES_TOKEN }}
+#         body: |
+#           编译使用版本:
+#           ${{ env.useVersionInfo }}
+#         artifacts: openwrt/bin/packages/*
   
