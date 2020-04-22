@@ -16,7 +16,7 @@ env:
   REPO_BRANCH: master
   CONFIG_FILE: .config
   SCRIPT_SH: script.sh
-  SSH_ACTIONS: true
+  SSH_ACTIONS: false
   UPLOAD_FIRMWARE: true
   TZ: Asia/Shanghai
 
@@ -66,12 +66,19 @@ jobs:
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true' || contains(github.event.action, 'ssh')
 
-#     - name: Compile the firmware
-#       run: |
-#         cd openwrt
-#         echo -e "$(nproc) thread compile"
-#         make -j$(nproc) || make -j1 V=s
-#         echo "::set-output name=status::success"
+    - name: Make the udp2raw ipk
+      id: udp2raw
+      run: |
+        cd openwrt
+        make package/udp2raw/compile V=99
+        echo "::set-output name=status::success"
+        
+    - name: Make the udpspeeder ipk
+      id: udpspeeder
+      run: |
+        cd openwrt
+        make package/udpspeeder/compile V=99
+        echo "::set-output name=status::success"
 
 #     - name: Organize files
 #       id: organize
@@ -92,6 +99,7 @@ jobs:
 
     - name: Upload artifact
       uses: actions/upload-artifact@master
+      if: steps.udpspeeder.outputs.status == 'success' || steps.udp2raw.outputs.status == 'success'
       with:
         name: OpenWrt firmware
         path: ./openwrt/bin/packages
@@ -107,5 +115,5 @@ jobs:
         body: |
           编译使用版本:
           ${{ env.useVersionInfo }}
-        artifacts: "${{ env.FIRMWARE }}/*"
+        artifacts: openwrt/bin/packages/*
   
